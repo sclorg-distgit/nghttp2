@@ -1,0 +1,13 @@
+diff --git a/lib/Makefile.in b/lib/Makefile.in
+index c57e66f..32aee0d 100644
+--- a/lib/Makefile.in
++++ b/lib/Makefile.in
+@@ -505,7 +505,7 @@ HFILES = nghttp2_pq.h nghttp2_int.h nghttp2_map.h nghttp2_queue.h \
+ 	nghttp2_http.h
+ 
+ libnghttp2_la_SOURCES = $(HFILES) $(OBJECTS)
+-libnghttp2_la_LDFLAGS = -no-undefined \
++libnghttp2_la_LDFLAGS = -no-undefined -release httpd24 \
+ 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+ 
+ all: all-recursive
