@@ -4,7 +4,7 @@
 Summary: Meta-package that only requires libnghttp2
 Name: %{?scl_prefix}nghttp2
 Version: 1.7.1
-Release: 1%{?dist}
+Release: 7%{?dist}
 License: MIT
 Group: Applications/Internet
 URL: https://nghttp2.org/
@@ -14,7 +14,7 @@ Patch0: nghttp2-1.7.0-httpd24.patch
 BuildRequires: CUnit-devel
 BuildRequires: openssl-devel
 BuildRequires: zlib-devel
-%{?scl:BuildRequires: %{scl}}
+%{?scl:BuildRequires: %{scl}-runtime}
 
 Requires: %{?scl_prefix}libnghttp2%{?_isa} = %{version}-%{release}
 
@@ -81,6 +81,8 @@ rm -f "$RPM_BUILD_ROOT%{_datadir}/doc/nghttp2/README.rst"
 # do not install man pages and helper scripts for tools that are not available
 rm -fr "$RPM_BUILD_ROOT%{_datadir}/nghttp2"
 rm -fr "$RPM_BUILD_ROOT%{_mandir}/man1"
+
+mv %{buildroot}%{_libdir}/pkgconfig/libnghttp2.pc %{buildroot}%{_libdir}/pkgconfig/%{scl_prefix}libnghttp2.pc
 %{?scl:EOF}
 
 %post -n %{?scl_prefix}libnghttp2 -p /sbin/ldconfig
@@ -105,12 +107,18 @@ make %{?_smp_mflags} check
 
 %files -n %{?scl_prefix}libnghttp2-devel
 %{_includedir}/nghttp2
-%{_libdir}/pkgconfig/libnghttp2.pc
+%{_libdir}/pkgconfig/%{scl_prefix}libnghttp2.pc
 %{_libdir}/libnghttp2*.so
 %doc README.rst
 
 
 %changelog
+* Thu Sep 13 2018 Luboš Uhliarik <luhliari@redhat.com> - 1.7.1-7
+- Resolves: #1540167 - provides without httpd24 pre/in-fix
+
+* Wed May 24 2017 Luboš Uhliarik <luhliari@redhat.com> - 1.7.1-6
+- rebuild
+
 * Wed Feb 17 2016 Jan Kaluza <jkaluza@redhat.com> 1.7.1-1
 - fix CVE-2016-1544 (out of memory due to unlimited incoming HTTP header)
 
